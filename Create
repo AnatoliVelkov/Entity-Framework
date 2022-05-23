@@ -1,0 +1,66 @@
+public partial class AddGoodsPage : MaterialForm
+    {
+        WarehouseDBContext db = new WarehouseDBContext();
+        public AddGoodsPage()
+        {
+            InitializeComponent();
+        }
+
+        private void AddGoodsPage_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSave_Click(object sender, EventArgs e)
+        {
+        //Information from the consumer about the status of the goods
+            string publishGoods;
+            if (checkBoxYES.Checked==true)
+            {
+                publishGoods = "ДА";
+            }
+            else
+            {
+                publishGoods = "НЕ";
+            }
+            //Get the values submitted by the user
+            Goods goods = new Goods();
+            goods.Name = textBoxName.Text.ToString();
+            goods.Category = listBoxCategories.GetItemText(listBoxCategories.SelectedItem).ToString();
+            goods.Supplier = textBoxSupplier.Text.ToString();
+            goods.Description = textBoxDescription.Text.ToString();
+            goods.SalePrice = Convert.ToDecimal(numericSalePrice.Value);
+            goods.DeliveryPrice = Convert.ToDecimal(numericDeliveryPrice.Value);
+            goods.Count = Convert.ToInt32(numericCount.Value);
+            goods.Publish = publishGoods;
+
+        //User selection check
+            try
+            {
+                DialogResult dialogResult = MessageBox.Show("", "Добавяне на стока!", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                //Clear boxes
+                    db.Goods.Add(goods);
+                    textBoxName.Clear();
+                    textBoxSupplier.Clear();
+                    db.SaveChanges();
+                    
+                }
+                else if (dialogResult == DialogResult.No)
+                {
+                    //do something else
+                }
+            }
+            catch (Exception)
+            {
+                MessageBox.Show("Нещо се обърка!!!");
+                throw;
+            }
+        }
+
+        private void buttonReject_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+    }
