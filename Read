@@ -1,0 +1,14 @@
+ // Show all goods from database to datagridview
+ public partial class ShowGoods : MaterialForm
+    {
+        WarehouseDBContext db = new WarehouseDBContext();
+        public ShowGoods()
+        {
+            InitializeComponent();
+        }
+
+        private void ShowGoods_Load(object sender, EventArgs e)
+        {
+            gridViewAllGoods.DataSource = db.Goods.Select(x=>x).ToList();
+        }
+    }
